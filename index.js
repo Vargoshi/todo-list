@@ -1,6 +1,7 @@
 const list = document.getElementById("todo-list");
 const input = document.getElementById("input");
 const addButton = document.getElementById("add_button");
+const clearButton = document.getElementById("clear_button");
 const todoCountElem = document.getElementById("todo-count");
 
 let todos = [
@@ -33,7 +34,7 @@ function renderList() {
 
         // render text
         listElement.appendChild(document.createTextNode(todo.text + " "));
-        
+
         // render delete button
         if (todo.done) {
             const removeButton = document.createElement("button");
@@ -66,12 +67,17 @@ addButton.addEventListener("click", (event) => {
     input.value = "";
 });
 
+clearButton.addEventListener("click", (event) => {
+    todos = todos.filter((todo) => !todo.done);
+    render();
+});
+
 // TODO list
 // - [x] Add new item [remove]
 // - [x] Remove item [remove]
 // - [ ] Save list to local storage
 // - [ ] Load list from local storage
 
-// [_________] [add]
+// [_________] [add] [clear done]
 
 // X todos remaining

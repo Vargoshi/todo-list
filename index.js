@@ -1,13 +1,14 @@
 const list = document.getElementById("todo-list");
 const input = document.getElementById("input");
+const todoForm = document.getElementById("todo-form");
 const addButton = document.getElementById("add_button");
 const clearButton = document.getElementById("clear_button");
 const todoCountElem = document.getElementById("todo-count");
 
 let todos = [
-    { text: "Learn React", done: true },
-    { text: "Learn Redux", done: false },
-    { text: "Learn React-Redux", done: false },
+    { date: new Date("2022-09-04T12:22:12Z"), text: "Learn React", done: true, author: "Nikita" },
+    { date: new Date("2022-09-04T13:32:12Z"), text: "Learn Redux", done: false, author: "Nikita" },
+    { date: new Date("2022-09-04T14:25:12Z"), text: "Learn React-Redux", done: false, author: "Nikita" },
 ];
 
 function render() {
@@ -20,20 +21,49 @@ function render() {
 function renderList() {
     for (const todo of todos) {
         const listElement = document.createElement("li");
-        listElement.style.textDecoration = todo.done ? "line-through" : "";
+        listElement.className = todo.done ? "todo-done" : "";
 
         // render checkbox
-        const checkbox = document.createElement("input");
-        checkbox.type = "checkbox";
-        checkbox.checked = todo.done;
-        checkbox.addEventListener("input", (event) => {
-            todo.done = checkbox.checked;
-            render();
-        });
-        listElement.appendChild(checkbox);
+        {
+            const checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.checked = todo.done;
+            checkbox.addEventListener("input", (event) => {
+                todo.done = checkbox.checked;
+                render();
+            });
+            listElement.appendChild(checkbox);
+        }
 
+        const textContainer = document.createElement("div");
+        textContainer.className = "todo-text-container";
         // render text
-        listElement.appendChild(document.createTextNode(todo.text + " "));
+        {
+            const span = document.createElement("span");
+            span.textContent = todo.text;
+            span.className = "todo-text";
+            textContainer.appendChild(span);
+        }
+        // render metadata
+        {
+            const metadataContainer = document.createElement("div");
+            metadataContainer.className = "todo-metadata";
+            {
+                const span = document.createElement("span");
+                span.textContent = "at " + todo.date.toLocaleDateString();
+                span.className = "todo-date";
+                metadataContainer.appendChild(span);
+            }
+
+            {
+                const span = document.createElement("span");
+                span.textContent = "by " + todo.author;
+                span.className = "todo-author";
+                metadataContainer.appendChild(span);
+            }
+            textContainer.appendChild(metadataContainer);
+        }
+        listElement.appendChild(textContainer);
 
         // render delete button
         if (todo.done) {
@@ -45,7 +75,7 @@ function renderList() {
                 render();
             });
 
-            removeButton.textContent = "Remove";
+            removeButton.textContent = "X";
 
             listElement.appendChild(removeButton);
         }
@@ -56,15 +86,22 @@ function renderList() {
 
 function renderCount() {
     const todoCount = todos.filter((todo) => !todo.done).length;
-    todoCountElem.textContent = `${todoCount} TODOs remaining`;
+    todoCountElem.textContent = `${todoCount}`;
 }
 
 render();
 
-addButton.addEventListener("click", (event) => {
-    todos.push({ text: input.value, done: false });
+todoForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    todos.push({
+        date: new Date(),
+        text: input.value,
+        done: false,
+        author: "Vargoshi"
+    });
+    event.target.reset();
     render();
-    input.value = "";
+    
 });
 
 clearButton.addEventListener("click", (event) => {

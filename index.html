@@ -10,18 +10,24 @@
 </head>
 
 <body>
-  <ul id="todo-list">
-  </ul>
-  <input type="text" id="input" required minlength="4" maxlength="8" size="10">
-  <button id="add_button">
-    Add
-  </button>
-  <button id="clear_button">
-    Clear Done
-  </button>
-  <p id="todo-count">
-    TODOs remaining
-  </p>
+  <nav>
+    <a href="#">Notifications</a>
+    <a href="#" class="active">Todo <span id="todo-count">0</span></a>
+  </nav>
+
+  <ul id="todo-list"></ul>
+
+  <form id="todo-form">
+    <input type="text" id="input" placeholder="New todo..." required>
+    <div id="todo-actions">
+      <button type="submit" class="button-primary" id="add_button">
+        Add
+      </button>
+      <button type="button" id="clear_button">
+        Clear Done
+      </button>
+    </div>
+  </form>
 </body>
 
 </html>
